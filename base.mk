@@ -811,20 +811,16 @@ PRODUCT_PACKAGES := \
     Email \
     Gallery2 \
     LatinIME \
-    Music \
     netutils-wrapper-1.0 \
     Provision \
     Protips \
-    QuickSearchBox \
     Settings \
     Sync \
     SystemUI \
     Updater \
     CalendarProvider \
     SyncProvider \
-    SoundRecorder \
     IM \
-    FM2 \
     SnapdragonGallery \
     SnapdragonMusic \
     VideoEditor \
