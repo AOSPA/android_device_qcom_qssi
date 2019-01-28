@@ -28,11 +28,13 @@ VENDOR_QTI_DEVICE := qssi
 #Single system image project structure
 TARGET_USES_QSSI := true
 
+ENABLE_AB ?= true
+
 # Enable chain partition for system, to facilitate system-only OTA in Treble.
 BOARD_AVB_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_SYSTEM_ROLLBACK_INDEX := 0
-BOARD_AVB_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
+BOARD_AVB_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 
 TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/qssi/common64.mk)
@@ -59,25 +61,13 @@ TARGET_USES_QCOM_BSP := false
 # RRO configuration
 TARGET_USES_RRO := true
 
-#Default vendor image configuration
-ifeq ($(ENABLE_VENDOR_IMAGE),)
-ENABLE_VENDOR_IMAGE := false
-endif
-ifeq ($(ENABLE_VENDOR_IMAGE), true)
-#Comment on msm8998 tree says that QTIC does not
-# yet support system/vendor split. So disabling it
-# for msmnile as well
-#TARGET_USES_QTIC := false
-#TARGET_USES_QTIC_EXTENSION := false
-
-endif
-
 #Enable llvm support for kernel
 KERNEL_LLVM_SUPPORT := true
 
 #Enable sd-llvm suppport for kernel
 KERNEL_SD_LLVM_SUPPORT := true
 
+TARGET_USES_NQ_NFC := true
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
@@ -103,10 +93,6 @@ TARGET_DISABLE_QTI_VPP := false
 
 ifneq ($(TARGET_DISABLE_DASH), true)
     PRODUCT_BOOT_JARS += qcmediaplayer
-endif
-
-ifneq ($(strip $(QCPATH)),)
-    PRODUCT_BOOT_JARS += WfdCommon
 endif
 
 #Project is missing on sdm845, comment it for now
@@ -152,6 +138,7 @@ PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
 PRODUCT_PACKAGES += fs_config_files
 
+ifeq ($(ENABLE_AB), true)
 #A/B related packages
 PRODUCT_PACKAGES += update_engine \
     update_engine_client \
@@ -163,7 +150,7 @@ PRODUCT_PACKAGES += update_engine \
 
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
-
+endif
 
 #Healthd packages
 PRODUCT_PACKAGES += \
@@ -172,11 +159,9 @@ PRODUCT_PACKAGES += \
     android.hardware.health@1.0-service \
     libhealthd.msm
 
-
-DEVICE_MANIFEST_FILE := device/qcom/msmnile/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
-DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile/framework_manifest.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/qcom/msmnile/vendor_framework_compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/qssi/framework_manifest.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/vendor_framework_compatibility_matrix.xml
 
 
 #ANT+ stack
@@ -233,7 +218,7 @@ KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTAL
 
 #Exclude vibrator from InputManager
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnile/excluded-input-devices.xml:system/etc/excluded-input-devices.xml
+    device/qcom/qssi/excluded-input-devices.xml:system/etc/excluded-input-devices.xml
 
 #Enable full treble flag
 PRODUCT_FULL_TREBLE_OVERRIDE := true
