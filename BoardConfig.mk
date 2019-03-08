@@ -136,7 +136,7 @@ BOARD_RAMDISK_OFFSET     := 0x02000000
 
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
 
 KERN_CONF_PATH := kernel/msm-4.14/arch/arm64/configs/vendor/
 KERN_CONF_FILE := $(shell ls $(KERN_CONF_PATH) | grep sm8..._defconfig)
@@ -167,6 +167,8 @@ TARGET_PD_SERVICE_ENABLED := true
 TARGET_PER_MGR_ENABLED := true
 
 # Enable dex pre-opt to speed up initial boot
+WITH_DEXPREOPT := false
+WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
 ifeq ($(HOST_OS),linux)
     ifeq ($(WITH_DEXPREOPT),)
       WITH_DEXPREOPT := true

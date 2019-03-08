@@ -1,14 +1,22 @@
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 
+PRODUCT_SOONG_NAMESPACES += \
+    hardware/google/av \
+    hardware/google/interfaces
+
 # define flag to determine the kernel
 TARGET_KERNEL_VERSION := $(shell ls kernel | grep "msm-*" | sed 's/msm-//')
 
-# Set TARGET_USES_NEW_ION for 4.14 and higher kernels
+# Set flags for 4.14 and higher kernels
 ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),3.18 4.4 4.9))
 TARGET_USES_NEW_ION := false
 else
 TARGET_USES_NEW_ION := true
+#Enable llvm support for kernel
+KERNEL_LLVM_SUPPORT := true
+#Enable sd-llvm suppport for kernel
+KERNEL_SD_LLVM_SUPPORT := true
 endif
 
 KERNEL_DEFCONFIG := sdm845_defconfig
@@ -60,12 +68,6 @@ TARGET_USES_QCOM_BSP := false
 
 # RRO configuration
 TARGET_USES_RRO := true
-
-#Enable llvm support for kernel
-KERNEL_LLVM_SUPPORT := true
-
-#Enable sd-llvm suppport for kernel
-KERNEL_SD_LLVM_SUPPORT := true
 
 TARGET_USES_NQ_NFC := true
 
@@ -136,6 +138,8 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 AUDIO_DLKM += audio_wcd934x.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
+
+USE_CUSTOM_AUDIO_POLICY := 0
 
 PRODUCT_PACKAGES += fs_config_files
 
