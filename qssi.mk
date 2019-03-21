@@ -79,7 +79,6 @@ BOARD_FRP_PARTITION_NAME := frp
 #Android EGL implementation
 PRODUCT_PACKAGES += libGLES_android
 
--include $(QCPATH)/common/config/qtic-config.mk
 -include hardware/qcom/display/config/msmnile.mk
 
 
@@ -111,8 +110,11 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
 # Audio configuration file
+-include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/qssi/qssi.mk
 -include $(TOPDIR)hardware/qcom/audio/configs/msmnile/msmnile.mk
--include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmnile/msmnile.mk
+AUDIO_FEATURE_ENABLED_SVA_MULTI_STAGE := true
+USE_CUSTOM_AUDIO_POLICY := 0
+USE_LIB_PROCESS_GROUP := true
 
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
@@ -138,8 +140,6 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 AUDIO_DLKM += audio_wcd934x.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
-
-USE_CUSTOM_AUDIO_POLICY := 0
 
 PRODUCT_PACKAGES += fs_config_files
 

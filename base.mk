@@ -40,7 +40,6 @@ QCOM_BOARD_PLATFORMS += $(MSMSTEPPE)
 
 QSD8K_BOARD_PLATFORMS := qsd8k
 
-TARGET_USE_VENDOR_CAMERA_EXT := true
 TARGET_USE_QTI_BT_STACK := true
 
 BOARD_HAVE_QCOM_FM ?= true
@@ -424,36 +423,6 @@ LIB_NL := libnl_2
 #LIB_XML2
 LIB_XML2 := libxml2
 
-#LIBCAMERA
-LIBCAMERA := camera.apq8084
-LIBCAMERA += camera.msm8974
-LIBCAMERA += camera.msm8226
-LIBCAMERA += camera.msm8610
-LIBCAMERA += camera.msm8960
-LIBCAMERA += camera.msm8660
-LIBCAMERA += camera.msm7630_surf
-LIBCAMERA += camera.msm7630_fusion
-LIBCAMERA += camera.msm7627a
-LIBCAMERA += camera.msm8909
-LIBCAMERA += camera.msm8916
-LIBCAMERA += camera.msm8994
-LIBCAMERA += camera.msm8992
-LIBCAMERA += camera.msm8996
-LIBCAMERA += camera.msm8998
-LIBCAMERA += camera.apq8098_latv
-LIBCAMERA += camera.sdm660
-LIBCAMERA += camera.msm8952
-LIBCAMERA += camera.msm8937
-LIBCAMERA += camera.msm8953
-LIBCAMERA += libcamera
-LIBCAMERA += libmmcamera_interface
-LIBCAMERA += libmmcamera_interface2
-LIBCAMERA += libmmjpeg_interface
-LIBCAMERA += libmmlib2d_interface
-LIBCAMERA += libqomx_core
-LIBCAMERA += mm-qcamera-app
-LIBCAMERA += camera_test
-LIBCAMERA += org.codeaurora.camera
 
 #LIBCOPYBIT
 LIBCOPYBIT := copybit.msm8660
@@ -690,11 +659,7 @@ MM_VIDEO += ExoplayerDemo
 MM_VIDEO += libaacwrapper
 
 # Codec2.0
-MM_VIDEO += libqcodec2
-MM_VIDEO += qcodec2_test
-MM_VIDEO += vendor.qti.media.c2@1.0-service
-MM_VIDEO += vendor.qti.media.c2@1.0-service.rc
-MM_VIDEO += media_codecs_c2.xml
+# vendor codec2 components are added in target-specific makefile
 MM_VIDEO += libmedia_codecserviceregistrant
 MM_VIDEO += libsfplugin_ccodec
 MM_VIDEO += com.android.media.swcodec
@@ -906,12 +871,9 @@ PRODUCT_PACKAGES := \
     FM2 \
     FMRecord \
     SnapdragonGallery \
-    SnapdragonMusic \
     VideoEditor \
-    SnapdragonLauncher \
     a4wpservice \
     wipowerservice \
-    Mms \
     QtiDialer \
     qtiNetworkLib \
     TestApp5G
@@ -980,7 +942,6 @@ PRODUCT_PACKAGES += $(KEYPAD)
 PRODUCT_PACKAGES += $(KS)
 PRODUCT_PACKAGES += $(LIB_NL)
 PRODUCT_PACKAGES += $(LIB_XML2)
-PRODUCT_PACKAGES += $(LIBCAMERA)
 PRODUCT_PACKAGES += $(LIBGESTURES)
 PRODUCT_PACKAGES += $(LIBCOPYBIT)
 PRODUCT_PACKAGES += $(LIBGRALLOC)
@@ -1045,6 +1006,16 @@ PRODUCT_PACKAGES += android.hardware.drm@1.0-impl
 PRODUCT_PACKAGES += android.hardware.drm@1.0-service
 PRODUCT_PACKAGES += android.hardware.drm@1.1-service.widevine
 PRODUCT_PACKAGES += android.hardware.drm@1.1-service.clearkey
+
+# Don't use dynamic DRM HAL for non-go SPs
+ifneq ($(TARGET_HAS_LOW_RAM),true)
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service.widevine
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service.clearkey
+else
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service-lazy.widevine
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service-lazy.clearkey
+endif
+
 ifeq ($(strip $(OTA_FLAG_FOR_DRM)),true)
 PRODUCT_PACKAGES += move_widevine_data.sh
 endif
