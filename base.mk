@@ -46,25 +46,18 @@ BOARD_HAVE_QCOM_FM ?= true
 
 
 # Boot additions
-#Android Telephony library
-PRODUCT_BOOT_JARS += qtiNetworkLib
-PRODUCT_BOOT_JARS += ims-ext-common
 ifeq ($(strip $(TARGET_USES_NQ_NFC)),true)
 PRODUCT_BOOT_JARS += com.nxp.nfc.nq
 endif
 ifeq ($(strip $(BOARD_HAVE_QCOM_FM)),true)
+ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS),true)
 PRODUCT_BOOT_JARS += qcom.fmradio
+endif
 endif #BOARD_HAVE_QCOM_FM
 #Camera QC extends API
 #ifeq ($(strip $(TARGET_USES_QTIC_EXTENSION)),true)
 #PRODUCT_BOOT_JARS += com.qualcomm.qti.camera
 #endif
-ifneq ($(strip $(TARGET_DISABLE_PERF_OPTIMIATIONS)),true)
-# Preloading QPerformance jar to ensure faster perflocks in Boost Framework
-PRODUCT_BOOT_JARS += QPerformance
-# Preloading UxPerformance jar to ensure faster UX invoke in Boost Framework
-PRODUCT_BOOT_JARS += UxPerformance
-endif
 
 #skip boot jars check
 SKIP_BOOT_JARS_CHECK := true
@@ -592,9 +585,6 @@ LIBOVERLAY += overlay.default
 #LIBGENLOCK
 LIBGENLOCK := libgenlock
 
-#LIBPERFLOCK
-LIBPERFLOCK := org.codeaurora.Performance
-
 #LIBQCOMUI
 LIBQCOMUI := libQcomUI
 
@@ -843,7 +833,6 @@ PRODUCT_PACKAGES := \
     AccountAndSyncSettings \
     DeskClock \
     AlarmProvider \
-    HidTestApp \
     Calculator \
     Calendar \
     Camera \
@@ -874,9 +863,7 @@ PRODUCT_PACKAGES := \
     VideoEditor \
     a4wpservice \
     wipowerservice \
-    QtiDialer \
-    qtiNetworkLib \
-    TestApp5G
+    QtiDialer
 
 ifneq ($(BOARD_HAVE_BLUETOOTH),false)
 PRODUCT_PACKAGES += \
@@ -1217,6 +1204,3 @@ PRODUCT_PACKAGES += libvndfwk_detect_jni.qti
 PRODUCT_PACKAGES += libqti_vndfwk_detect
 PRODUCT_PACKAGES += libvndfwk_detect_jni.qti.vendor
 PRODUCT_PACKAGES += libqti_vndfwk_detect.vendor
-
-# TODO(b/124534788): Temporarily allow eng and debug LOCAL_MODULE_TAGS
-BUILD_BROKEN_ENG_DEBUG_TAGS := true
