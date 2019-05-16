@@ -36,6 +36,7 @@ media.stagefright.enable-aac=true
 media.stagefright.enable-qcp=true
 media.stagefright.enable-fma2dp=true
 media.stagefright.enable-scan=true
+media.stagefright.thumbnail.prefer_hw_codecs=true
 media.stagefright.audio.deep=true
 media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 mmp.enable.3g2=true
@@ -129,6 +130,10 @@ persist.sys.wfd.virtual=0
 
 #property to enable HWC for VDS
 debug.sf.enable_hwc_vds=1
+
+#property to latch unsignaled buffer
+debug.sf.latch_unsignaled=1
+
 # enable tunnel encoding for amrwb
 tunnel.audio.encode = true
 
