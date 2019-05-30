@@ -7,8 +7,8 @@ PRODUCT_BUILD_PRODUCT_IMAGE := false
 PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
 PRODUCT_BUILD_ODM_IMAGE := false
 PRODUCT_BUILD_CACHE_IMAGE := false
-PRODUCT_BUILD_RAMDISK_IMAGE := true
-PRODUCT_BUILD_USERDATA_IMAGE := true
+PRODUCT_BUILD_RAMDISK_IMAGE := false
+PRODUCT_BUILD_USERDATA_IMAGE := false
 
 #Also, there is no need to build an OTA package as this will be done later
 #when we combine this system build with the non-system images.
@@ -230,13 +230,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
-
-KMGK_USE_QTI_SERVICE := true
-
-#Enable KEYMASTER 4.0
-ENABLE_KM_4_0 := true
-#Should be enabled only on msmnile
-ENABLE_STRONGBOX_KM := true
 
 ifneq ($(strip $(TARGET_USES_RRO)),true)
 DEVICE_PACKAGE_OVERLAYS += device/qcom/qssi/overlay
