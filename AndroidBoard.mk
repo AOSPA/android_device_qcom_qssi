@@ -25,7 +25,12 @@ $(BUILT_TARGET_FILES_PACKAGE): $(INSTALLED_BOOTLOADER_MODULE)
 droidcore: $(INSTALLED_BOOTLOADER_MODULE)
 endif
 
-
+#----------------------------------------------------------------------
+# Compile Linux Kernel
+#----------------------------------------------------------------------
+ifneq ($(wildcard device/qcom/kernelscripts/kernel_definitions.mk),)
+include device/qcom/kernelscripts/kernel_definitions.mk
+else
 DTC := $(HOST_OUT_EXECUTABLES)/dtc$(HOST_EXECUTABLE_SUFFIX)
 UFDT_APPLY_OVERLAY := $(HOST_OUT_EXECUTABLES)/ufdt_apply_overlay$(HOST_EXECUTABLE_SUFFIX)
 
@@ -44,7 +49,6 @@ TARGET_KERNEL_MAKE_ENV += HOSTLDFLAGS="-L/usr/lib -L/usr/lib/x86_64-linux-gnu"
 
 KERNEL_LLVM_BIN := $(lastword $(sort $(wildcard $(SOURCE_ROOT)/$(LLVM_PREBUILTS_BASE)/$(BUILD_OS)-x86/clang-4*)))/bin/clang
 
-
 $(warning Kernel source tree path is: $(TARGET_KERNEL_SOURCE))
 $(warning Kernel version  is: $(TARGET_KERNEL_VERSION))
 $(warning Kernel version  is: $(KERNEL_DEFCONFIG))
@@ -53,6 +57,7 @@ $(TARGET_PREBUILT_KERNEL): $(DTC) $(UFDT_APPLY_OVERLAY)
 
 $(INSTALLED_KERNEL_TARGET): $(TARGET_PREBUILT_KERNEL) | $(ACP)
 	$(transform-prebuilt-to-target)
+endif
 
 #----------------------------------------------------------------------
 # Copy additional target-specific files
@@ -96,16 +101,6 @@ else
         $(call dist-for-goals,droidcore,$(LOCAL_PATH)/ota_merge_configs/without_dynamic_partition/non_ab/merge_config_other_item_list)
         $(call dist-for-goals,droidcore,$(LOCAL_PATH)/ota_merge_configs/without_dynamic_partition/non_ab/merge_config_system_misc_info_keys)
     endif
-endif
-
-#----------------------------------------------------------------------
-# Radio image
-#----------------------------------------------------------------------
-ifeq ($(ADD_RADIO_FILES), true)
-radio_dir := $(LOCAL_PATH)/radio
-RADIO_FILES := $(shell cd $(radio_dir) ; ls)
-$(foreach f, $(RADIO_FILES), \
-	$(call add-radio-file,radio/$(f)))
 endif
 
 #----------------------------------------------------------------------
