@@ -28,6 +28,12 @@ TARGET_HW_DISK_ENCRYPTION_PERF := true
 
 BOARD_SECCOMP_POLICY := device/qcom/$(TARGET_BOARD_PLATFORM)/seccomp
 
+ifeq ($(SHIPPING_API_LEVEL),29)
+  BOARD_SYSTEMSDK_VERSIONS:=29
+else ifeq ($(SHIPPING_API_LEVEL),28)
+  BOARD_SYSTEMSDK_VERSIONS:=28
+endif
+
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 TARGET_NO_KERNEL := false
@@ -159,10 +165,6 @@ ifeq ($(ENABLE_VENDOR_IMAGE), false)
 	$(error "Vendor Image is mandatory !!")
 endif
 
-#Flag to enable System SDK Requirements.
-#All vendor APK will be compiled against system_current API set.
-BOARD_SYSTEMSDK_VERSIONS:=28
-
 BUILD_BROKEN_DUP_RULES := true
 
 #Enable VNDK Compliance
@@ -185,8 +187,9 @@ BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system product
+BOARD_EXT4_SHARE_DUP_BLOCKS := true
 ifeq ($(ENABLE_AB), true)
-AB_OTA_PARTITIONS ?= system product
+AB_OTA_PARTITIONS ?= system product vbmeta_system
 endif
 endif
 ###### Dynamic Partition Handling ####
