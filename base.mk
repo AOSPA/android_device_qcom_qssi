@@ -41,11 +41,11 @@ QCOM_BOARD_PLATFORMS += $(TRINKET)
 QCOM_BOARD_PLATFORMS += kona
 QCOM_BOARD_PLATFORMS += atoll
 QCOM_BOARD_PLATFORMS += lito
+QCOM_BOARD_PLATFORMS += bengal
 
 QSD8K_BOARD_PLATFORMS := qsd8k
 
 TARGET_USE_VENDOR_CAMERA_EXT := true
-TARGET_USE_QTI_BT_STACK := true
 
 BOARD_HAVE_QCOM_FM ?= true
 
@@ -65,7 +65,7 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 MSM_VIDC_TARGET_LIST := msm8974 msm8610 msm8226 apq8084 msm8916 msm8994 msm8909 msm8992 msm8996 msm8952 msm8937 msm8953 msm8998 apq8098_latv sdm660 sdm845 sdm710 qcs605 msmnile $(MSMSTEPPE) $(TRINKET) kona atoll lito
 
 #List of targets that use master side content protection
-MASTER_SIDE_CP_TARGET_LIST := msm8996 msm8998 sdm660 sdm845 apq8098_latv sdm710 qcs605 msmnile $(MSMSTEPPE) $(TRINKET) atoll
+MASTER_SIDE_CP_TARGET_LIST := msm8996 msm8998 sdm660 sdm845 apq8098_latv sdm710 qcs605 msmnile $(MSMSTEPPE) $(TRINKET) kona lito atoll
 
 # Below projects/packages with LOCAL_MODULEs will be used by
 # PRODUCT_PACKAGES to build LOCAL_MODULEs that are tagged with
@@ -213,9 +213,6 @@ BT += libbt-vendor
 BT += libbthost_if
 BT += libbt-logClient
 BT += bt_logger
-ifeq ($(TARGET_USE_QTI_BT_STACK), true)
-BT += libbluetooth_qti
-endif
 BT += libbt-hidlclient
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/qcom/common
 
@@ -273,7 +270,6 @@ FASTPOWERON := FastBoot
 #FM
 FM := qcom.fmradio
 FM += libqcomfm_jni
-FM += libfmjni
 FM += fm_helium
 FM += ftm_fm_lib
 FM += libfm-hci
@@ -829,7 +825,6 @@ PRODUCT_PACKAGES := \
     SoundRecorder \
     IM \
     FM2 \
-    FMRecord \
     SnapdragonGallery \
     SnapdragonMusic \
     VideoEditor \
@@ -837,12 +832,6 @@ PRODUCT_PACKAGES := \
     a4wpservice \
     wipowerservice
 
-ifneq ($(BOARD_HAVE_BLUETOOTH),false)
-PRODUCT_PACKAGES += \
-    Bluetooth \
-    BluetoothExt \
-    BATestApp
-endif
 
 ifeq ($(TARGET_HAS_LOW_RAM),true)
     DELAUN := Launcher3Go
