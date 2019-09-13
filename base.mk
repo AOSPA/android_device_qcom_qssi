@@ -47,7 +47,7 @@ QSD8K_BOARD_PLATFORMS := qsd8k
 
 TARGET_USE_VENDOR_CAMERA_EXT := true
 
-BOARD_HAVE_QCOM_FM ?= true
+BOARD_HAVE_QCOM_FM := false
 
 #Camera QC extends API
 #ifeq ($(strip $(TARGET_USES_QTIC_EXTENSION)),true)
