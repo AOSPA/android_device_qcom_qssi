@@ -1147,3 +1147,6 @@ PRODUCT_PACKAGES += libqti_vndfwk_detect.vendor
 
 # Skip vendor/pa kernel.mk
 TARGET_PROVIDES_KERNEL_MAKEFILE := true
+
+# Include QC binaries
+-include vendor/qcom/common/qti-vendor.mk
