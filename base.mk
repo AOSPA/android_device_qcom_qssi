@@ -150,6 +150,7 @@ AUDIO_HARDWARE += audio.primary.$(MSMSTEPPE)
 AUDIO_HARDWARE += audio.primary.$(TRINKET)
 AUDIO_HARDWARE += audio.primary.kona
 AUDIO_HARDWARE += audio.primary.lito
+AUDIO_HARDWARE += audio.primary.bengal
 AUDIO_HARDWARE += audio.primary.atoll
 #
 AUDIO_POLICY := audio_policy.mpq8064
