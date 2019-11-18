@@ -3,6 +3,7 @@ $(call inherit-product, device/qcom/qssi/base.mk)
 # For PRODUCT_COPY_FILES, the first instance takes precedence.
 # Since we want use QC specific files, we should inherit
 # device-vendor.mk first to make sure QC specific files gets installed.
+$(call inherit-product-if-exists, $(QCPATH)/data-noship-cvv/url_block/cne_url_block_noship_product.mk)
 $(call inherit-product-if-exists, $(QCPATH)/common/config/device-vendor-qssi.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
