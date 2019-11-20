@@ -4,3 +4,4 @@ libqvrcamera_client.qti.so
 libbinauralrenderer_wrapper.qti.so
 libhoaeffects.qti.so
 libupdateprof.qti.so
+libthermalclient.qti.so
