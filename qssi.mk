@@ -232,6 +232,10 @@ KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTAL
 PRODUCT_COPY_FILES += \
     device/qcom/qssi/excluded-input-devices.xml:system/etc/excluded-input-devices.xml
 
+#copy product specific whitelisted libraries to product/etc
+PRODUCT_COPY_FILES += \
+    device/qcom/qssi/public.libraries.product-qti.txt:$(TARGET_COPY_OUT_PRODUCT)/etc/public.libraries-qti.txt
+
 #Enable full treble flag
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
