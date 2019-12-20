@@ -83,7 +83,12 @@ BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 KERN_CONF_PATH := kernel/msm-$(TARGET_KERNEL_VERSION)/arch/arm64/configs
 KERNEL_DEFCONFIG := sdm845_defconfig
 ifeq ($(wildcard $(KERN_CONF_PATH)/$(KERNEL_DEFCONFIG)),)
-KERNEL_DEFCONFIG := $(shell ls $(KERN_CONF_PATH)/vendor | grep sm8..._defconfig)
+KERNEL_DEFCONFIG := $(shell ls $(KERN_CONF_PATH)/vendor | grep ^sm8..._defconfig)
+
+ifeq ($(KERNEL_DEFCONFIG),)
+KERNEL_DEFCONFIG := $(shell ls $(KERN_CONF_PATH)/vendor | grep sdm845_defconfig)
+endif
+
 ifeq ($(KERNEL_DEFCONFIG),)
 KERNEL_DEFCONFIG := kona_defconfig
 endif
