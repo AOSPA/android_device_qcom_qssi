@@ -1,6 +1,14 @@
 #For QSSI, we build only the system image. Here we explicitly set the images
 #we build so there is no confusion.
 
+#Enable product partition Native I/F. It is automatically set to current if
+#the shipping API level for the target is greater than 29
+PRODUCT_PRODUCT_VNDK_VERSION := current
+
+#Enable product partition Java I/F. It is automatically set to true if
+#the shipping API level for the target is greater than 29
+PRODUCT_ENFORCE_PRODUCT_PARTITION_INTERFACE := true
+
 PRODUCT_BUILD_SYSTEM_IMAGE := true
 PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
 PRODUCT_BUILD_VENDOR_IMAGE := false
@@ -221,6 +229,10 @@ endif
 PRODUCT_COPY_FILES += \
     device/qcom/qssi/public.libraries.product-qti.txt:$(TARGET_COPY_OUT_PRODUCT)/etc/public.libraries-qti.txt
 
+# copy system_ext specific whitelisted libraries to system_ext/etc
+PRODUCT_COPY_FILES += \
+    device/qcom/qssi/public.libraries.system_ext-qti.txt:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/public.libraries-qti.txt
+
 #Enable full treble flag
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
@@ -257,8 +269,13 @@ ifeq ($(ENABLE_VIRTUAL_AB), true)
     $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 endif
 
+ifeq ($(SYSTEMEXT_SEPARATE_PARTITION_ENABLE), false)
+PRODUCT_PACKAGES += \
+    qti_skip_mount.cfg
+endif
+
 # Include mainline components and QSSI whitelist
-ifeq ($(shell test $(SHIPPING_API_LEVEL) -ge 29; echo $$?),0)
+ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
   $(call inherit-product, device/qcom/qssi/qssi_whitelist.mk)
   PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := true
 endif
