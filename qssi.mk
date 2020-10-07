@@ -121,8 +121,6 @@ BOARD_FRP_PARTITION_NAME := frp
 #Android EGL implementation
 PRODUCT_PACKAGES += libGLES_android
 
-PRODUCT_BOOT_JARS += tcmiface
-PRODUCT_BOOT_JARS += telephony-ext
 PRODUCT_PACKAGES += telephony-ext
 
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
