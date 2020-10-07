@@ -952,8 +952,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     vndk-sp \
 
-TARGET_FS_CONFIG_GEN := device/qcom/qssi/config.fs
-
 ifeq ($(TARGET_HAS_LOW_RAM),true)
     PRODUCT_PROPERTY_OVERRIDES += \
         persist.vendor.qcomsysd.enabled=0
