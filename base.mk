@@ -667,6 +667,8 @@ WLAN += qca_cld_wlan.ko
 #FD_LEAK
 FD_LEAK := libc_leak_detector
 
+# Use the PA package list.
+ifeq ($(TARGET_USES_CLO_PACKAGE_LIST),true)
 PRODUCT_PACKAGES := \
     AccountAndSyncSettings \
     DeskClock \
@@ -697,6 +699,7 @@ PRODUCT_PACKAGES := \
     SnapdragonLauncher \
     QesdkSysService \
     libqesdk_ndk_platform.qti
+endif
 
 ifeq ($(TARGET_HAS_LOW_RAM),true)
     DELAUN := Launcher3Go
